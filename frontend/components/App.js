@@ -8,6 +8,7 @@ export default class App extends React.Component {
     todos: [],
     error: '',
     todoNameInput: '',
+    
   }
 
   onTodoNameInputChange = evt => {
@@ -16,11 +17,13 @@ export default class App extends React.Component {
   }
 
   resetForm = () => this.setState({...this.state, todoNameInput: '' })
+
   setAxiosResponseError = err => this.setState({...this.state, error: err.response.data.message})
+
   postNewTodo = () => {
     axios.post(URL, { name: this.state.todoNameInput })
     .then(res => {
-      this.fetchAllTodos()
+      this.setState({...this.state, todos: this.state.todos.concat(res.data.data) })
       this.resetForm()
     })
     .catch(this.setAxiosResponseError)
